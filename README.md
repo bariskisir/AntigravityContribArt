@@ -4,6 +4,8 @@
 
 AntigravityContribArt is a .NET CLI tool that converts any text into pixel art and writes it onto GitHub's contribution calendar by creating precisely-dated git commits. No push is performed — you decide when and where to publish.
 
+<img src="screenshot.png" alt="Screenshot" width="80%">
+
 ---
 
 ## Features
