@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using System.Text;
 
-namespace AntigravityContribArt;
+namespace ContribArt;
 
 /// <summary>
 /// Handles all git operations: initializing repositories and creating

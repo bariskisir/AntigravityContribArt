@@ -1,4 +1,4 @@
-namespace AntigravityContribArt;
+namespace ContribArt;
 
 /// <summary>
 /// Converts a text string into a 7-row boolean pixel grid by looking up each

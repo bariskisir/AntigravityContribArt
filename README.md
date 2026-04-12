@@ -1,8 +1,8 @@
-# AntigravityContribArt
+# ContribArt
 
 **Draw text on your GitHub contribution graph using backdated commits.**
 
-AntigravityContribArt is a .NET CLI tool that converts any text into pixel art and writes it onto GitHub's contribution calendar by creating precisely-dated git commits. No push is performed — you decide when and where to publish.
+ContribArt is a .NET CLI tool that converts any text into pixel art and writes it onto GitHub's contribution calendar by creating precisely-dated git commits. No push is performed — you decide when and where to publish.
 
 <img src="screenshot.png" alt="Screenshot" width="80%">
 
@@ -32,8 +32,8 @@ AntigravityContribArt is a .NET CLI tool that converts any text into pixel art a
 ## Installation
 
 ```bash
-git clone https://github.com/bariskisir/AntigravityContribArt.git
-cd AntigravityContribArt/src/AntigravityContribArt
+git clone https://github.com/bariskisir/ContribArt.git
+cd ContribArt/src/ContribArt
 dotnet restore
 dotnet build
 ```
@@ -117,7 +117,7 @@ Your contribution graph will update within a few minutes after pushing.
 ## Project Structure
 
 ```
-src/AntigravityContribArt/
+src/ContribArt/
 ├── Program.cs                  # CLI entry point (thin wrapper)
 ├── ContributionArtEngine.cs    # Pipeline orchestrator
 ├── TextRenderer.cs             # Text → pixel grid renderer (single & two-line)
@@ -126,7 +126,7 @@ src/AntigravityContribArt/
 ├── ContributionGrid.cs         # Pixel grid → calendar date mapper
 ├── GridHelper.cs               # Grid utility methods
 ├── GitService.cs               # Git init, cleanup & fast-import commit creation
-└── AntigravityContribArt.csproj
+└── ContribArt.csproj
 ```
 
 ---

@@ -1,4 +1,4 @@
-namespace AntigravityContribArt;
+namespace ContribArt;
 
 /// <summary>
 /// Utility class for grid manipulation operations such as counting lit cells

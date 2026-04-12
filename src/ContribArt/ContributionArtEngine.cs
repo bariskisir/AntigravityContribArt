@@ -1,4 +1,4 @@
-namespace AntigravityContribArt;
+namespace ContribArt;
 
 /// <summary>
 /// Orchestrates the full contribution art pipeline: rendering text into a
@@ -56,7 +56,7 @@ public class ContributionArtEngine
     {
         Console.WriteLine();
         Console.WriteLine("╔══════════════════════════════════════════════════╗");
-        Console.WriteLine("║          AntigravityContribArt v1.0.0           ║");
+        Console.WriteLine("║             ContribArt v1.0.0                   ║");
         Console.WriteLine("║    GitHub Contribution Graph Text Writer        ║");
         Console.WriteLine("╚══════════════════════════════════════════════════╝");
         Console.WriteLine();

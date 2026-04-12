@@ -1,4 +1,4 @@
-namespace AntigravityContribArt;
+namespace ContribArt;
 
 /// <summary>
 /// Provides a compact 3-row × 3-column pixel bitmap font for rendering text

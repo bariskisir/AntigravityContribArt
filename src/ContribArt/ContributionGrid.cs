@@ -1,4 +1,4 @@
-namespace AntigravityContribArt;
+namespace ContribArt;
 
 /// <summary>
 /// Maps a 7×N boolean pixel grid onto calendar dates that align with GitHub's

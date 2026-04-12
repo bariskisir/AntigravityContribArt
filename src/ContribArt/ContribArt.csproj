@@ -5,8 +5,8 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <AssemblyName>AntigravityContribArt</AssemblyName>
-    <RootNamespace>AntigravityContribArt</RootNamespace>
+    <AssemblyName>ContribArt</AssemblyName>
+    <RootNamespace>ContribArt</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

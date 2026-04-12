@@ -1,9 +1,9 @@
 ﻿using System.CommandLine;
 
-namespace AntigravityContribArt;
+namespace ContribArt;
 
 /// <summary>
-/// CLI entry point for AntigravityContribArt. Defines command-line options
+/// CLI entry point for ContribArt. Defines command-line options
 /// and delegates execution to <see cref="ContributionArtEngine"/>.
 /// </summary>
 public class Program
@@ -15,7 +15,7 @@ public class Program
     public static async Task<int> Main(string[] args)
     {
         var rootCommand = new RootCommand(
-            "AntigravityContribArt — Draw text on GitHub's contribution graph using backdated commits.");
+            "ContribArt — Draw text on GitHub's contribution graph using backdated commits.");
 
         var folderOption = new Option<string>(
             name: "--folder",
