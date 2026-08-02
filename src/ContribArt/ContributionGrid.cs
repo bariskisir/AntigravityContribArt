@@ -10,19 +10,6 @@ namespace ContribArt;
 public class ContributionGrid
 {
     /// <summary>
-    /// Base number of commits for a "lit" cell. This value is set high to
-    /// ensure a solid dark green (level 4) on GitHub's contribution graph
-    /// for maximum text readability.
-    /// </summary>
-    private const int BaseCommitCount = 20;
-
-    /// <summary>
-    /// Random variation applied to commit counts. Set to 0 for uniform
-    /// intensity, ensuring all lit cells appear at the same green level.
-    /// </summary>
-    private const int CommitVariation = 0;
-
-    /// <summary>
     /// The first Sunday of the contribution graph period.
     /// </summary>
     public DateTime StartDate { get; }
@@ -74,10 +61,16 @@ public class ContributionGrid
     /// Number of columns (weeks) to skip from the left before placing the
     /// text. Default is 0 (start at the beginning of the graph).
     /// </param>
+    /// <param name="baseCommitCount">
+    /// Number of commits per lit cell. Default is 20.
+    /// </param>
+    /// <param name="noiseMode">
+    /// When true, each cell gets a random commit count between 0 and <paramref name="baseCommitCount"/>.
+    /// </param>
     /// <returns>
     /// A sequence of <see cref="CommitInstruction"/> for every lit cell.
     /// </returns>
-    public IEnumerable<CommitInstruction> GetCommitInstructions(bool[,] grid, int skipColumns = 0)
+    public IEnumerable<CommitInstruction> GetCommitInstructions(bool[,] grid, int skipColumns = 0, int baseCommitCount = 20, bool noiseMode = false)
     {
         var random = new Random(42); // Deterministic seed for reproducible results
         int rows = grid.GetLength(0);
@@ -89,8 +82,19 @@ public class ContributionGrid
             {
                 if (grid[row, col])
                 {
-                    int commitCount = BaseCommitCount + random.Next(-CommitVariation, CommitVariation + 1);
-                    yield return new CommitInstruction(GetDate(row, col + skipColumns), Math.Max(1, commitCount));
+                    int commitCount;
+                    if (noiseMode)
+                    {
+                        commitCount = random.Next(0, baseCommitCount + 1);
+                    }
+                    else
+                    {
+                        commitCount = baseCommitCount;
+                    }
+                    if (commitCount > 0)
+                    {
+                        yield return new CommitInstruction(GetDate(row, col + skipColumns), commitCount);
+                    }
                 }
             }
         }

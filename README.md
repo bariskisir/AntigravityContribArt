@@ -43,24 +43,38 @@ dotnet build
 ## Usage
 
 ```bash
-dotnet run -- --folder <path> --text <text> --committer-name <name> --committer-email <email> [--skip-column <n>]
+dotnet run -- --folder <path> --committer-name <name> --committer-email <email> (--text <text> | --all | --noise) [--count <n>] [--skip-column <n>]
 ```
 
 ### Parameters
 
 | Parameter          | Required | Default | Description |
 |--------------------|----------|---------|-------------|
-| `--folder`         | ✅       | —       | Path to the target folder. A git repo will be initialized here if needed. |
-| `--text`           | ✅       | —       | Text to render on the contribution graph. |
-| `--committer-name` | ✅       | —       | Name to use as the commit author/committer. |
-| `--committer-email`| ✅       | —       | Email to use as the commit author/committer. |
-| `--skip-column`    | ❌       | `0`     | Number of columns (weeks) to skip from the left before placing the text. |
+| `--folder`         | Yes       | —       | Path to the target folder. A git repo will be initialized here if needed. |
+| `--committer-name` | Yes       | —       | Name to use as the commit author/committer. |
+| `--committer-email`| Yes       | —       | Email to use as the commit author/committer. |
+| `--text`           | *        | —       | Text to render on the contribution graph (A-Z, 0-9, basic punctuation). |
+| `--all`            | *        | —       | Fill the entire 53×7 contribution graph area with commits. |
+| `--noise`          | *        | —       | Fill the entire area with random commit counts between 0 and `--count`. |
+| `--count`          | No        | `20`   | Base number of commits per lit cell. Used by `--text`, `--all`, and `--noise`. |
+| `--skip-column`    | No        | `0`     | Number of columns (weeks) to skip from the left before placing the text. |
+
+\* Exactly one of `--text`, `--all`, or `--noise` must be specified.
 
 ### Examples
 
 ```bash
 # Write "HELLO" to a new repo
 dotnet run -- --folder C:\contrib-art --text "HELLO" --committer-name "ContribArt" --committer-email "contribart@users.noreply.github.com"
+
+# Fill the entire contribution graph with green
+dotnet run -- --folder ./my-repo --all --committer-name "John" --committer-email "john@example.com"
+
+# Fill with random noise (0–20 commits per cell)
+dotnet run -- --folder ./my-repo --noise --committer-name "John" --committer-email "john@example.com"
+
+# Fill with noise using a custom commit count
+dotnet run -- --folder ./my-repo --noise --count 50 --committer-name "John" --committer-email "john@example.com"
 
 # Write "HI" with 5 columns offset
 dotnet run -- --folder ./my-repo --text "HI" --committer-name "John" --committer-email "john@example.com" --skip-column 5

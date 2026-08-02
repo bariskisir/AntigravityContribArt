@@ -26,18 +26,30 @@ public class ContributionArtEngine
     /// <param name="folder">Target folder path for the git repository.</param>
     /// <param name="text">Text to render on the contribution graph.</param>
     /// <param name="skipColumn">Number of columns to skip from the left (default 0).</param>
-    public void Run(string folder, string text, int skipColumn)
+    public void Run(string folder, string? text, bool all, bool noise, int commitCount, int skipColumn)
     {
         PrintBanner();
 
-        // ── Step 1: Render text to pixel grid ────────────────────────────
-        var grid = RenderText(text);
+        // ── Step 1: Build pixel grid ─────────────────────────────────────
+        bool[,]? grid;
+        if (all)
+        {
+            grid = CreateFullGrid();
+        }
+        else if (noise)
+        {
+            grid = CreateFullGrid();
+        }
+        else
+        {
+            grid = RenderText(text!);
+        }
         if (grid is null) return;
 
         ShowPreview(grid, skipColumn);
 
         // ── Step 2: Map grid to calendar dates ───────────────────────────
-        var instructions = MapToCalendar(grid, skipColumn);
+        var instructions = MapToCalendar(grid, skipColumn, commitCount, noise);
 
         // ── Step 3: Ensure git repository ────────────────────────────────
         string fullPath = PrepareRepository(folder);
@@ -46,7 +58,7 @@ public class ContributionArtEngine
         CreateAllCommits(fullPath, instructions);
 
         // ── Done ─────────────────────────────────────────────────────────
-        PrintSummary(fullPath, text);
+        PrintSummary(fullPath, text, all, noise);
     }
 
     /// <summary>
@@ -85,6 +97,21 @@ public class ContributionArtEngine
     }
 
     /// <summary>
+    /// Creates a full 53×7 grid with all cells lit, used by --all and --noise modes.
+    /// </summary>
+    private static bool[,] CreateFullGrid()
+    {
+        Console.WriteLine("► Step 1: Creating full grid...");
+        var grid = new bool[GridHelper.GraphHeight, GridHelper.GraphWidth];
+        for (int r = 0; r < GridHelper.GraphHeight; r++)
+            for (int c = 0; c < GridHelper.GraphWidth; c++)
+                grid[r, c] = true;
+        Console.WriteLine($"  Grid size: {GridHelper.GraphWidth} columns × {GridHelper.GraphHeight} rows");
+        Console.WriteLine($"  All {GridHelper.GraphWidth * GridHelper.GraphHeight} cells lit");
+        return grid;
+    }
+
+    /// <summary>
     /// Displays grid statistics and a full 53×7 console preview showing
     /// exactly how the text will appear on GitHub's contribution graph.
     /// </summary>
@@ -105,11 +132,11 @@ public class ContributionArtEngine
     /// Maps the rendered pixel grid onto calendar dates and returns commit
     /// instructions.
     /// </summary>
-    private static List<CommitInstruction> MapToCalendar(bool[,] grid, int skipColumn)
+    private static List<CommitInstruction> MapToCalendar(bool[,] grid, int skipColumn, int commitCount, bool noiseMode)
     {
         Console.WriteLine("► Step 2: Mapping pixels to calendar dates...");
         var contributionGrid = new ContributionGrid(DateTime.Now);
-        var instructions = contributionGrid.GetCommitInstructions(grid, skipColumn).ToList();
+        var instructions = contributionGrid.GetCommitInstructions(grid, skipColumn, commitCount, noiseMode).ToList();
         int totalCommits = instructions.Sum(i => i.CommitCount);
 
         Console.WriteLine($"  Graph period: {contributionGrid.StartDate:yyyy-MM-dd} → " +
@@ -161,8 +188,9 @@ public class ContributionArtEngine
     /// <summary>
     /// Prints the final success message and next steps for the user.
     /// </summary>
-    private static void PrintSummary(string fullPath, string text)
+    private static void PrintSummary(string fullPath, string? text, bool all, bool noise)
     {
+        string displayText = all ? "ALL" : noise ? "NOISE" : text!;
         Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine("✓ Done! All commits have been created successfully.");
         Console.ResetColor();
@@ -173,7 +201,7 @@ public class ContributionArtEngine
         Console.WriteLine("  3. git push -u origin master");
         Console.WriteLine();
         Console.WriteLine("  After pushing, your GitHub profile contribution graph will display");
-        Console.WriteLine($"  the text \"{text}\" within a few minutes.");
+        Console.WriteLine($"  the text \"{displayText}\" within a few minutes.");
         Console.WriteLine();
     }
 }
